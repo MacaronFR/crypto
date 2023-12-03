@@ -40,7 +40,7 @@ fun RowScope.TableCell(
     Text(
         text = text,
         Modifier
-            .border(1.dp, Color.Black)
+            .border(1.dp, MaterialTheme.colorScheme.background)
             .weight(1f / 6)
             .padding(8.dp)
     )
