@@ -158,7 +158,11 @@ class MainActivity : ComponentActivity() {
                             if (data.isNotEmpty()) {
                                 Column(Modifier.padding(8.dp)) {
                                     Text("${data[0].a} % ${data[0].b} = ${data[0].r}")
-                                    Text("L'inverse modulaire de ${data[0].a} % ${data[0].b} est ${data[0].u}")
+                                    if(data.last().b == 1) {
+                                        Text("L'inverse modulaire de ${data[0].a} % ${data[0].b} est ${data[0].u}")
+                                    } else {
+                                        Text("Il n'y a pas d'inverse modulaire pour ${data[0].a} % ${data[0].b}")
+                                    }
                                 }
                             }
                         }
