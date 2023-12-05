@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             .padding(it),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        NavHost(navController = navController, startDestination = Page.Hill.route) {
+                        NavHost(navController = navController, startDestination = Page.Euler.route) {
                             composable(Page.Euler.route) { Euler() }
                             composable(Page.Hill.route) { Hill() }
                         }

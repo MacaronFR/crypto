@@ -17,12 +17,12 @@ enum class Page(val route: String) {
 fun NavigationBar(navHost: NavHostController) {
     BottomAppBar {
         NavigationBarItem(
-            selected = navHost.currentDestination?.hierarchy?.any { it.route == Page.Euler.route } ?: true,
+            selected = false,
             onClick = { navHost.navigate(Page.Euler.route) },
             label = { Text("Euler") },
             icon = { Icon(Icons.Default.Functions, "Bouton pour naviguer vers la page Euler") })
         NavigationBarItem(
-            selected = navHost.currentDestination?.hierarchy?.any { it.route == Page.Hill.route } == true,
+            selected = false,
             onClick = { navHost.navigate(Page.Hill.route) },
             label = { Text("Hill") },
             icon = { Icon(Icons.Default.DataArray, "Bouton pour naviguer vers la page Hill") })

@@ -1,8 +1,6 @@
 package fr.imacaron.crypto
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -108,8 +106,21 @@ fun Hill() {
                     focusRequester = focus5
                 )
             }
-            Button(onClick = { det = a.toInt() * d.toInt() - b.toInt() * c.toInt() }) {
-                Text("Let's go")
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                ElevatedButton(onClick = {
+                    a = ""
+                    b = ""
+                    c = ""
+                    d = ""
+                    mod = ""
+                    det = null
+                    focus1.requestFocus()
+                } ) {
+                    Text("Mr propre")
+                }
+                Button(onClick = { det = a.toInt() * d.toInt() - b.toInt() * c.toInt() }, enabled = a.isNotBlank() && b.isNotBlank() && c.isNotBlank() && d.isNotBlank() && mod.isNotBlank(), modifier = Modifier.padding(start = 8.dp)) {
+                    Text("Let's go")
+                }
             }
         }
         Card(Modifier.padding(8.dp)) {
