@@ -23,6 +23,14 @@ import androidx.core.text.isDigitsOnly
 val textStyle = TextStyle(fontSize = TextUnit(25f, TextUnitType.Em))
 val textStyle2 = TextStyle(fontSize = TextUnit(10f, TextUnitType.Em))
 
+data class Save(
+    val a: Int,
+    val b: Int,
+    val c: Int,
+    val d: Int,
+    val mod: Int
+)
+
 @Composable
 fun Hill() {
     var a by remember { mutableStateOf("") }
@@ -31,6 +39,7 @@ fun Hill() {
     var d by remember { mutableStateOf("") }
     var mod by remember { mutableStateOf("") }
     var det: Int? by remember { mutableStateOf(null) }
+    var save: Save? by remember { mutableStateOf(null) }
     val focus1 = remember { FocusRequester() }
     val focus2 = remember { FocusRequester() }
     val focus3 = remember { FocusRequester() }
@@ -94,6 +103,7 @@ fun Hill() {
                         focus3.freeFocus()
                         focus4.freeFocus()
                         focus5.freeFocus()
+                        save = Save(a.toInt(), b.toInt(), c.toInt(), d.toInt(), mod.toInt())
                         det = a.toInt() * d.toInt() - b.toInt() * c.toInt()
                     }),
                     focusRequester = focus5
@@ -107,11 +117,19 @@ fun Hill() {
                     d = ""
                     mod = ""
                     det = null
+                    save = null
                     focus1.requestFocus()
-                } ) {
+                }) {
                     Text("Mr propre")
                 }
-                Button(onClick = { det = a.toInt() * d.toInt() - b.toInt() * c.toInt() }, enabled = a.isNotBlank() && b.isNotBlank() && c.isNotBlank() && d.isNotBlank() && mod.isNotBlank(), modifier = Modifier.padding(start = 8.dp)) {
+                Button(
+                    onClick = {
+                        det = a.toInt() * d.toInt() - b.toInt() * c.toInt()
+                        save = Save(a.toInt(), b.toInt(), c.toInt(), d.toInt(), mod.toInt())
+                    },
+                    enabled = a.isNotBlank() && b.isNotBlank() && c.isNotBlank() && d.isNotBlank() && mod.isNotBlank(),
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
                     Text("Let's go")
                 }
             }
@@ -119,24 +137,32 @@ fun Hill() {
         Card(Modifier.padding(8.dp)) {
             det?.let {
                 Text(
-                    "Le déterminant de la matrice est $it soit ${(it % mod.toInt() + mod.toInt()) % mod.toInt()} % $mod",
+                    "Le déterminant de la matrice est $it soit ${(it % save!!.mod + save!!.mod) % save!!.mod} % ${save!!.mod}",
                     Modifier.padding(8.dp)
                 )
             }
         }
         Card(Modifier.padding(8.dp)) {
             det?.let {
-                Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text("(", style = textStyle)
-                    Column(Modifier.padding(end = 12.dp)) {
-                        Text(d, style = textStyle2)
-                        Text("${-b.toInt()}", style = textStyle2)
+                val data = euler(it, save!!.mod)
+                if (data.last().b == 1) {
+                    Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("(", style = textStyle)
+                        Column(Modifier.padding(end = 12.dp)) {
+                            Text("${save!!.d}", style = textStyle2)
+                            Text("${-save!!.b}", style = textStyle2)
+                        }
+                        Column {
+                            Text("${-save!!.c}", style = textStyle2)
+                            Text("${save!!.a}", style = textStyle2)
+                        }
+                        Text(")", style = textStyle)
                     }
-                    Column {
-                        Text("${-c.toInt()}", style = textStyle2)
-                        Text(a, style = textStyle2)
-                    }
-                    Text(")", style = textStyle)
+                } else {
+                    Text(
+                        "Comme le déterminant de la matrice n'est pas inversable la matrice n'est pas inversable % ${save!!.mod}",
+                        Modifier.padding(8.dp)
+                    )
                 }
             }
         }
