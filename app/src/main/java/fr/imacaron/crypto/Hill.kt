@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 
 val textStyle = TextStyle(fontSize = TextUnit(25f, TextUnitType.Em))
 val textStyle2 = TextStyle(fontSize = TextUnit(10f, TextUnitType.Em))
@@ -144,7 +143,7 @@ fun Hill() {
         }
         Card(Modifier.padding(8.dp)) {
             det?.let {
-                val data = euler((it % save!!.mod + save!!.mod) % save!!.mod, save!!.mod)
+                val data = euclide((it % save!!.mod + save!!.mod) % save!!.mod, save!!.mod)
                 println(data)
                 if (data.last().b == 1) {
                     Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {

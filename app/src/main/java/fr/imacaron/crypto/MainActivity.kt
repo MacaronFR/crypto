@@ -44,8 +44,9 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         NavHost(navController = navController, startDestination = Page.Euler.route) {
-                            composable(Page.Euler.route) { Euler() }
+                            composable(Page.Euler.route) { Euclide() }
                             composable(Page.Hill.route) { Hill() }
+                            composable(Page.Affine.route) { Affine() }
                         }
                     }
                 }

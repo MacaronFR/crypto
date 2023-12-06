@@ -23,7 +23,7 @@ import androidx.core.text.isDigitsOnly
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun Euler() {
+fun Euclide() {
     var key by remember { mutableStateOf("") }
     var mod by remember { mutableStateOf("") }
     var data by remember { mutableStateOf(listOf<Euler>()) }
@@ -67,7 +67,7 @@ fun Euler() {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = {
                         focus2.freeFocus()
-                        data = euler(key.toInt(),mod.toInt())
+                        data = euclide(key.toInt(),mod.toInt())
                         keyboardController?.hide()
                     })
                 )
@@ -81,7 +81,7 @@ fun Euler() {
                         Text("Mr. Propre")
                     }
                     Button(modifier = Modifier.padding(start = 8.dp), onClick = {
-                        data = euler(key.toInt(), mod.toInt())
+                        data = euclide(key.toInt(), mod.toInt())
                         keyboardController?.hide()
                         focus.freeFocus()
                         focus2.freeFocus()
@@ -138,40 +138,3 @@ fun Euler() {
         }
     }
 }
-
-fun euler(a: Int, b: Int): List<Euler> {
-    val data = mutableListOf(Euler(a, b))
-    recEuler(data, 0)
-    return data
-}
-
-fun recEuler(data: MutableList<Euler>, i: Int) {
-    val n = data[i].run {
-        r = a % b
-        q = a / b
-        if (r != 0) {
-            Euler(b, r)
-        } else {
-            if (b == 1) {
-                u = 0
-                v = 1
-            }
-            null
-        }
-    }
-    n?.let {
-        data.add(it)
-        recEuler(data, i + 1)
-        data[i].u = data[i + 1].v
-        data[i].v = -data[i].q * data[i].u + data[i + 1].u
-    }
-}
-
-data class Euler(
-    val a: Int,
-    val b: Int,
-    var r: Int = 0,
-    var q: Int = 0,
-    var u: Int = 0,
-    var v: Int = 0
-)
