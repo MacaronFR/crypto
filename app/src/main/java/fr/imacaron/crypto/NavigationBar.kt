@@ -20,7 +20,7 @@ fun NavigationBar(navHost: NavHostController) {
             selected = false,
             onClick = { navHost.navigate(Page.Euler.route) },
             label = { Text("Euler") },
-            icon = { Icon(Icons.Default.Functions, "Bouton pour naviguer vers la page Euler") })
+            icon = { Icon(Icons.Default.Functions, "Bouton pour naviguer vers la page Euclide") })
         NavigationBarItem(
             selected = false,
             onClick = { navHost.navigate(Page.Hill.route) },

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 
 val textStyle = TextStyle(fontSize = TextUnit(25f, TextUnitType.Em))
+val textStyle2 = TextStyle(fontSize = TextUnit(10f, TextUnitType.Em))
 
 @Composable
 fun Hill() {
@@ -48,9 +49,7 @@ fun Hill() {
                         MinimalTextField(
                             value = a,
                             onValueChange = {
-                                if (it.isDigitsOnly()) {
-                                    a = it
-                                }
+                                a = it
                             },
                             keyboardImeAction = ImeAction.Next,
                             keyboardAction = KeyboardActions(onNext = { focus2.requestFocus() }),
@@ -58,9 +57,7 @@ fun Hill() {
                         )
                         MinimalTextField(
                             value = b, onValueChange = {
-                                if (it.isDigitsOnly()) {
-                                    b = it
-                                }
+                                b = it
                             },
                             keyboardImeAction = ImeAction.Next,
                             keyboardAction = KeyboardActions(onNext = { focus3.requestFocus() }),
@@ -70,9 +67,7 @@ fun Hill() {
                     Row(Modifier.padding(4.dp)) {
                         MinimalTextField(
                             value = c, onValueChange = {
-                                if (it.isDigitsOnly()) {
-                                    c = it
-                                }
+                                c = it
                             },
                             keyboardImeAction = ImeAction.Next,
                             keyboardAction = KeyboardActions(onNext = { focus4.requestFocus() }),
@@ -80,9 +75,7 @@ fun Hill() {
                         )
                         MinimalTextField(
                             value = d, onValueChange = {
-                                if (it.isDigitsOnly()) {
-                                    d = it
-                                }
+                                d = it
                             },
                             keyboardImeAction = ImeAction.Next,
                             keyboardAction = KeyboardActions(onNext = { focus5.requestFocus() }),
@@ -131,6 +124,22 @@ fun Hill() {
                 )
             }
         }
+        Card(Modifier.padding(8.dp)) {
+            det?.let {
+                Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text("(", style = textStyle)
+                    Column(Modifier.padding(end = 12.dp)) {
+                        Text(d, style = textStyle2)
+                        Text("${-b.toInt()}", style = textStyle2)
+                    }
+                    Column {
+                        Text("${-c.toInt()}", style = textStyle2)
+                        Text(a, style = textStyle2)
+                    }
+                    Text(")", style = textStyle)
+                }
+            }
+        }
     }
 }
 
@@ -156,7 +165,7 @@ fun MinimalTextField(
             color = MaterialTheme.colorScheme.onSecondaryContainer
         ),
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = keyboardImeAction),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = keyboardImeAction),
         keyboardActions = keyboardAction
     )
 }
