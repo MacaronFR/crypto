@@ -144,7 +144,8 @@ fun Hill() {
         }
         Card(Modifier.padding(8.dp)) {
             det?.let {
-                val data = euler(it, save!!.mod)
+                val data = euler((it % save!!.mod + save!!.mod) % save!!.mod, save!!.mod)
+                println(data)
                 if (data.last().b == 1) {
                     Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text("(", style = textStyle)
