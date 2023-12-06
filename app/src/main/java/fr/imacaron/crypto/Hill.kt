@@ -150,10 +150,10 @@ fun Hill() {
                         Text("(", style = textStyle)
                         Column(Modifier.padding(end = 12.dp)) {
                             Text("${save!!.d}", style = textStyle2)
-                            Text("${-save!!.b}", style = textStyle2)
+                            Text("${-save!!.c}", style = textStyle2)
                         }
                         Column {
-                            Text("${-save!!.c}", style = textStyle2)
+                            Text("${-save!!.b}", style = textStyle2)
                             Text("${save!!.a}", style = textStyle2)
                         }
                         Text(")", style = textStyle)
