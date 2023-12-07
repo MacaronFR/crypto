@@ -1,7 +1,6 @@
 package fr.imacaron.crypto
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -21,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun Affine() {
     var a by remember { mutableStateOf("") }
     var b by remember { mutableStateOf("") }
-    var paquet by remember { mutableIntStateOf(1) }
+    var paquet by remember { mutableIntStateOf(2) }
     var message by remember { mutableStateOf("") }
     var data by remember { mutableStateOf(listOf<Int>()) }
     var dataString by remember { mutableStateOf("[]") }
@@ -61,11 +60,11 @@ fun Affine() {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Button(onClick = {
                         if (message.isNotBlank()) {
-                            data = affinne(a.toInt(), b.toInt(), message, 1)
+                            data = affinne(a.toInt(), b.toInt(), message, paquet)
                             dataString = data.joinToString(prefix = "[", postfix = "]", separator = ", ")
                             textCoder = data.map { xedoc[it]?.uppercaseChar() ?: '∅' }.joinToString("")
                         } else if (data.isNotEmpty()) {
-                            message = deaffine(a.toInt(), b.toInt(), data, 1)
+                            message = deaffine(a.toInt(), b.toInt(), data, paquet)
                         }
                     }, enabled = a.isNotBlank() && b.isNotBlank() && (message.isNotBlank() || data.isNotEmpty())) {
                         Text("Let's go")
@@ -104,7 +103,7 @@ fun Affine() {
                             data = tmp.map { it.toInt() }
                             dataString = string
                             if (paquet == 1) {
-                                textCoder = tmp.map { xedoc[it.toInt()] }.joinToString()
+                                textCoder = tmp.map { xedoc[it.toInt()]?.uppercaseChar() }.joinToString("")
                             }
                         }
                     },

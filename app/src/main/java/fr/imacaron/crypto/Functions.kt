@@ -72,7 +72,7 @@ fun affinne(a: Int, b: Int, message: String, paquet: Int): List<Int> {
     while(message.getOrNull(i) != null) {
         var value = 0
         for(j in 0 until paquet) {
-            println(message.getOrNull(i + j))
+            value *= 100
             value += codex[message.getOrNull(i + j)?.lowercaseChar()] ?: 0
         }
         res.add((a * value + b) % getMod(paquet))
@@ -132,3 +132,73 @@ data class Euler(
     var u: Int = 0,
     var v: Int = 0
 )
+
+fun hill(key: Matrix, message: String, paquet: Int): List<Int> {
+    var i = 0
+    val res = mutableListOf<Int>()
+    var tmp: Int? = null
+    while(message.getOrNull(i) != null || tmp != null) {
+        var value = 0
+        for(j in 0 until paquet) {
+            value *= 100
+            value += codex[message.getOrNull(i + j)?.lowercaseChar()] ?: 0
+        }
+        tmp = if((i / paquet) % 2 == 1) {
+            res.add((key.a!! * tmp!! + key.b!! * value) % getMod(paquet))
+            res.add((key.c!! * tmp + key.d!! * value) % getMod(paquet))
+            null
+        } else {
+            value
+        }
+        i += paquet
+    }
+    return res
+}
+
+fun dehill(key: Matrix, data: List<Int>, paquet: Int): String {
+    val detKey = det(key)
+    val dataDetKey = euclide(detKey, getMod(paquet))
+    if(dataDetKey.last().b != 1) {
+        return ""
+    }
+    val invDetKey = dataDetKey[0].u
+    val invKey = invMatrix(key).run {
+        Matrix((a!! * invDetKey) % getMod(paquet), (b!! * invDetKey) % getMod(paquet), (c!! * invDetKey) % getMod(paquet), (d!! * invDetKey) % getMod(paquet))
+    }
+    println("det = $detKey, invDet = $invDetKey")
+    var tmp: Int? = null
+    val res = mutableListOf<Int>()
+    var i = 0
+    while(data.getOrNull(i) != null) {
+        tmp = if(tmp == null) {
+            println(i)
+            println(data.getOrNull(i))
+            data.getOrNull(i) ?: 0
+        } else {
+            println("tmp = $tmp & data = ${data.getOrNull(i) ?: 0} & matrix = $invKey")
+            var tmp1 = invKey.a!! * tmp + invKey.b!! * (data.getOrNull(i) ?: 0)
+            for(j in 0 until paquet) {
+                res.add(i - 1, (tmp1 modMath getMod(paquet) ) modMath  100)
+                tmp1 /= 100
+
+            }
+            tmp1 = invKey.c!! * tmp + invKey.d!! * (data.getOrNull(i) ?: 0)
+            for(j in 0 until paquet) {
+                res.add(i, (tmp1 modMath getMod(paquet)) modMath 100)
+                tmp1 /= 100
+            }
+            null
+        }
+        i++
+    }
+    println(res)
+    return res.map { xedoc[it]?.uppercaseChar() }.joinToString("")
+}
+
+fun det(a: Matrix): Int {
+    return a.a!! * a.d!! - a.b!! * a.c!!
+}
+
+fun invMatrix(matrix: Matrix): Matrix = Matrix(matrix.d!!, -matrix.b!!, -matrix.c!!, matrix.a!!)
+
+infix fun Int.modMath(other: Int): Int = ((this % other) + other) % other

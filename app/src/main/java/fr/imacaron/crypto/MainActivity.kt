@@ -45,8 +45,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(navController = navController, startDestination = Page.Euler.route) {
                             composable(Page.Euler.route) { Euclide() }
-                            composable(Page.Hill.route) { Hill() }
+                            composable(Page.Matrix.route) { Matrix() }
                             composable(Page.Affine.route) { Affine() }
+                            composable(Page.Hill.route) { Hill() }
                         }
                     }
                 }
