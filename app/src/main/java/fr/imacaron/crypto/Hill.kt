@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,7 +32,7 @@ fun Hill() {
                 Modifier
                     .padding(8.dp)
                     .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                MatrixCard(matrix = matrix, onMatrixChange = { matrix = it })
+                InputMatrixCard(matrix = matrix, onMatrixChange = { matrix = it })
                 Button(
                     onClick = {
                         if(message.isNotEmpty()){
@@ -43,7 +42,7 @@ fun Hill() {
                                 messageCoder = data.joinToString(separator = "") { (xedoc[it]?.uppercaseChar() ?: '∅').toString() }
                             }
                         } else {
-                            message = dehill(matrix, messageCoder.map { codex[it.lowercaseChar()] ?: 0}, paquet)
+                            message = dehill(matrix, data, paquet)
                         }
                     },
                     enabled = paquet != 0 && matrix.isFull() && (message.isNotEmpty() || data.isNotEmpty())
@@ -54,6 +53,22 @@ fun Hill() {
         }
         Card(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(8.dp)) {
+                OutlinedTextField(
+                    value = if(paquet == 0) "" else paquet.toString(),
+                    onValueChange = {
+                        if(it == "") {
+                            paquet = 0
+                        } else {
+                            it.toIntOrNull()?.let { int ->
+                                if(int in 1..3) {
+                                    paquet = int
+                                }
+                            }
+                        }
+                    },
+                    label = { Text("Paquet (1, 2 ou 3)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                )
                 OutlinedTextField(
                     value = message,
                     onValueChange = {
@@ -90,8 +105,12 @@ fun Hill() {
                 if(paquet == 1) {
                     OutlinedTextField(
                         value = messageCoder,
-                        onValueChange = {
-                            messageCoder = it
+                        onValueChange = { s ->
+                            messageCoder = s
+                            messageCoder.map { codex[it.lowercaseChar()] ?: 0 }.let { list ->
+                                data = list
+                                dataString = list.joinToString(", ", "[", "]")
+                            }
                         },
                         label = { Text("Message coder") },
                         singleLine = true,

@@ -171,20 +171,18 @@ fun dehill(key: Matrix, data: List<Int>, paquet: Int): String {
     var i = 0
     while(data.getOrNull(i) != null) {
         tmp = if(tmp == null) {
-            println(i)
-            println(data.getOrNull(i))
             data.getOrNull(i) ?: 0
         } else {
             println("tmp = $tmp & data = ${data.getOrNull(i) ?: 0} & matrix = $invKey")
-            var tmp1 = invKey.a!! * tmp + invKey.b!! * (data.getOrNull(i) ?: 0)
+            var tmp1 = (invKey.a!! * tmp + invKey.b!! * (data.getOrNull(i) ?: 0)) modMath getMod(paquet)
             for(j in 0 until paquet) {
-                res.add(i - 1, (tmp1 modMath getMod(paquet) ) modMath  100)
+                res.add((i - 1) * paquet, tmp1 modMath  100)
                 tmp1 /= 100
 
             }
-            tmp1 = invKey.c!! * tmp + invKey.d!! * (data.getOrNull(i) ?: 0)
+            tmp1 = (invKey.c!! * tmp + invKey.d!! * (data.getOrNull(i) ?: 0)) modMath getMod(paquet)
             for(j in 0 until paquet) {
-                res.add(i, (tmp1 modMath getMod(paquet)) modMath 100)
+                res.add(i * paquet, tmp1 modMath 100)
                 tmp1 /= 100
             }
             null
