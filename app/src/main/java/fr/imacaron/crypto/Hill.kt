@@ -14,6 +14,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +39,9 @@ fun Hill() {
                         if(message.isNotEmpty()){
                             data = hill(matrix, message, paquet)
                             dataString = data.joinToString(", ", "[", "]")
+                            if(paquet == 1) {
+                                messageCoder = data.joinToString(separator = "") { (xedoc[it]?.uppercaseChar() ?: '∅').toString() }
+                            }
                         } else {
                             message = dehill(matrix, messageCoder.map { codex[it.lowercaseChar()] ?: 0}, paquet)
                         }
@@ -52,7 +57,7 @@ fun Hill() {
                 OutlinedTextField(
                     value = message,
                     onValueChange = {
-                        message = it
+                        message = it.toUpperCase(Locale.current)
                     },
                     label = { Text("Message") },
                     singleLine = true,
@@ -82,15 +87,17 @@ fun Hill() {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { message = dehill(matrix, messageCoder.map { codex[it.lowercaseChar()] ?: 0}, paquet) })
                 )
-                OutlinedTextField(
-                    value = messageCoder,
-                    onValueChange = {
-                        messageCoder = it
-                    },
-                    label = { Text("Message coder") },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
-                )
+                if(paquet == 1) {
+                    OutlinedTextField(
+                        value = messageCoder,
+                        onValueChange = {
+                            messageCoder = it
+                        },
+                        label = { Text("Message coder") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
+                    )
+                }
             }
         }
     }
