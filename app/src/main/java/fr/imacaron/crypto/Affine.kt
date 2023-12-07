@@ -50,8 +50,14 @@ fun Affine() {
                 OutlinedTextField(
                     value = paquet.toString(),
                     onValueChange = {
-                        if (it in listOf("1", "2", "3")) {
-                            paquet = it.toInt()
+                        if(it == "") {
+                            paquet = 0
+                        } else {
+                            it.toIntOrNull()?.let { int ->
+                                if(int in 1..3) {
+                                    paquet = int
+                                }
+                            }
                         }
                     },
                     label = { Text("Paquet") },
